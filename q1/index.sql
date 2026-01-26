@@ -44,7 +44,7 @@ CREATE TABLE Exercicio (
     id_treino        INT NOT NULL,                      -- Chave estrangeira (ID do treino) 
     nome             VARCHAR(120) NOT NULL,             -- Nome do exercício (Ex: Supino Reto)
     series           INT,                                -- Número de séries    
-    repeticoes       VARCHAR(20),                        -- Número de repetições
+    repeticoes       VARCHAR(20),                        -- Número de repetições (Ex: 8-10)
     carga            VARCHAR(20),                        -- Carga em Kgs (Ex: 20Kgs)
     descanso         VARCHAR(20),                       -- Tempo de Descanço (Ex: 60s)
     ordem            INT,                                -- Ordem do exercício no treino
