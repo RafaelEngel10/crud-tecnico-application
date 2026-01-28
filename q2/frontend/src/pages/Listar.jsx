@@ -12,13 +12,15 @@ export function Listar() {
     const navigate = useNavigate();
 
     return (
-        <div className='section-parent'>
-            <div className='form-section'>
-                <div className='new-child-div'>
-                    <button className='form-button' onClick={() => navigate('/')}>←</button>
+        <div className='section-first-parent'> 
+            <div className='section-parent'>
+                <div className='form-section'>
+                    <div className='new-child-div'>
+                        <button className='form-button' onClick={() => navigate('/')}>←</button>
+                    </div>
+                    {list[id] || <p>Formulário não encontrado</p>}
+                    <div className='new-child-div' />
                 </div>
-                {list[id] || <p>Formulário não encontrado</p>}
-                <div className='new-child-div' />
             </div>
         </div>
     );

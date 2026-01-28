@@ -127,7 +127,6 @@
 - Consulta em SQL:
     UPDATE aluno 
         SET peso = 80.0,
-        objetivo = 'Definição'
+            objetivo = 'Definição'
     WHERE id_aluno = 3;
-    
 </pre>

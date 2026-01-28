@@ -14,13 +14,15 @@ export default function Cadastrar() {
     const { id } = useParams(); 
 
     return (
-        <div className='section-parent'>
-            <div className='form-section'>
-                <div className='new-child-div'>
-                    <button className='form-button' onClick={() => navigate('/')}>←</button>
+        <div className='section-first-parent'> 
+            <div className='section-parent'>
+                <div className='form-section'>
+                    <div className='new-child-div'>
+                        <button className='form-button' onClick={() => navigate('/')}>←</button>
+                    </div>
+                    {forms[id] || <p>Formulário não encontrado</p>}
+                    <div className='new-child-div' />
                 </div>
-                {forms[id] || <p>Formulário não encontrado</p>}
-                <div className='new-child-div' />
             </div>
         </div>
     );

@@ -1,13 +1,13 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { AtualizarAluno } from '../components/update/AtualizarAluno';
-import { EditarTreinoeExercicio } from '../components/update/EditarTreinoseExercicios';
+import { ExcluirAluno } from '../components/delete/ExcluirAluno';
+import { ExcluirTreinoExercicio } from '../components/delete/ExcluirTreinoOUExercicio';
 
 const forms = {
-  aluno: <AtualizarAluno />,
-  treino: <EditarTreinoeExercicio />
+  aluno: <ExcluirAluno />,
+  treino: <ExcluirTreinoExercicio />
 };
 
-export default function Atualizar() {
+export default function Excluir() {
     const navigate = useNavigate();
     const { id } = useParams(); 
 
