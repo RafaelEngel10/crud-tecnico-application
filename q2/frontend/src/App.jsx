@@ -1,39 +1,23 @@
 import { useState } from 'react'
-import { PersonalForm } from './components/PersonalForm'
+import { Cadastros } from './components/Cadastro';
+import { Overview } from './components/Overview';
 
 export default function App() {
-  const [count, setCount] = useState(0)
-
-  function handleClick(id, newId) {
-    const doc = document.getElementById(id);
-    doc.style.display = `none`;
-
-    const newDoc = document.getElementById(newId);
-    newDoc.style.display = `flex`;
-    return
-  }
-
   return (
     <>
       <main>
-        <section id='main-section'>
-          <div>
-            <div>
-              <button type='button' onClick={() => handleClick('main-section', 'form-section')}>Adicionar novo personal</button>  
-              <button type='button'>Adicionar novo aluno</button>  
-              <button type='button'>Adicionar novo treino</button>  
-              <button type='button'>Adicionar novo exercício</button>  
-            </div>  
+        <section>
+          <div className='section-parent'>
+            <div className='div-parent'>
+              <Cadastros />
+            </div>
           </div>
-          <div>
 
+          <div className='section-parent'>
+            <div className='div-parent'>
+              <Overview />
+            </div>
           </div>
-          <div>
-
-          </div>
-        </section >
-        <section id='form-section' style={{ display: 'none' }}>
-          <PersonalForm />
         </section>
       </main>
     </>

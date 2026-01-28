@@ -173,6 +173,91 @@ App.post('/exercicios', async (req, res) => {
   }
 })
 
+// Método de inserção de treino com exercícios
+App.post('/treino-exercicio', async (req, res) => {
+  const client = await pool.connect(); // usa o mesmo client na transação
+
+  try {
+    const {
+      id_aluno,
+      nome_treino,
+      data_criacao,
+      observacoes,
+      exercicios
+    } = req.body;
+
+    if (!id_aluno || !nome_treino) {
+      return res.status(400).json({ error: "Os campos id_aluno e nome_treino são obrigatórios." });
+    }
+
+    if (!Array.isArray(exercicios) || exercicios.length === 0) {
+      return res.status(400).json({ error: "O treino deve ter pelo menos um exercício." });
+    }
+
+    await client.query('BEGIN');
+
+    const treinoSQL = `
+      INSERT INTO personal_app."Treino"
+      (id_aluno, nome_treino, data_criacao, observacoes)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *
+    `;
+
+    const treinoValues = [
+      id_aluno,
+      nome_treino,
+      data_criacao || null,
+      observacoes || null
+    ];
+
+    const treinoResult = await client.query(treinoSQL, treinoValues);
+    const treinoCriado = treinoResult.rows[0];
+
+    // inserção dos exercícios
+    const exerciciosInseridos = [];
+
+    for (const ex of exercicios) {
+      if (!ex.nome) {
+        throw new Error("Todo exercício precisa ter nome.");
+      }
+
+      const exercicioSQL = `
+        INSERT INTO personal_app."Exercicio"
+        (id_treino, nome, series, repeticoes, carga, descanso, ordem)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        RETURNING *
+      `;
+
+      const exercicioValues = [
+        treinoCriado.id_treino,
+        ex.nome,
+        ex.series || null,
+        ex.repeticoes || null,
+        ex.carga || null,
+        ex.descanso || null,
+        ex.ordem || null
+      ];
+
+      const exercicioResult = await client.query(exercicioSQL, exercicioValues);
+      exerciciosInseridos.push(exercicioResult.rows[0]);
+    }
+
+    await client.query('COMMIT');
+
+    res.status(201).json({
+      treino: treinoCriado,
+      exercicios: exerciciosInseridos
+    });
+
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error(err);
+    res.status(500).json({ error: 'Erro ao criar treino com exercícios' });
+  } finally {
+    client.release();
+  }
+});
+
 
 
 // -- Método Read --
@@ -232,7 +317,7 @@ App.get('/alunos/:id', async (req, res) => {
 
   try {
     const result = await pool.query(
-      'SELECT * FROM personal_app."Aluno" WHERE id = $1',
+      'SELECT * FROM personal_app."Aluno" WHERE id_aluno = $1',
       [id]
     )
 
